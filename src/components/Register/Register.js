@@ -1,20 +1,19 @@
 import React, {useState} from 'react';
-import axios from 'axios'
+import axios from 'axios';
+import { toast  } from 'react-toastify';
+import { Link } from "react-router-dom"
+import logo from '../../images/logo.jpg'
 
 import "./register.css";
 
 import {
     Form,
     Input,
-    InputNumber,
-    Cascader,
     Select,
     Row,
     Col,
     Card,
-    Checkbox,
     Button,
-    AutoComplete,
   } from 'antd';
 
 import "./register.css";
@@ -23,23 +22,22 @@ const Register = () =>{
     const [form] = Form.useForm();
     const [firstname, setFirstName] = useState("");
     const [othernames, setOtherNames] = useState("");
-    const [id, setID] = useState("");
+    const [idorpassportnumber, setID] = useState("");
     const [phonenumber, setPhoneNumber] = useState("");
-    const [gender, setGender] = useState(["Male", "Female", "Other"]);
+    const [gender, setGender] = useState("");
     const [dateofbirth, setDateOfBirth] = useState("");
-    const [county, setCounty] = useState(["Kisii", "Nairobi", "Kwale"]);
-    const [constituencies, setConstituencies] = useState(["Bomachoge", "Bobasi", "Kajiado"]);
-    const [ward, setWard] = useState(["Rongai", "Uthiru", "South B"]);
-    const [pollingstation, setPollingStation] = useState(["Kenyenya", "Kabianga", "Tendere"]);
-
+    const [county, setCounty] = useState("");
+    const [constituencies, setConstituencies] = useState("");
+    const [ward, setWard] = useState("");
+    const [pollingstation, setPollingStation] = useState("");
+    
+    const genders = ["Male", "Female", "Other"]
 
 const onSubmit = (e) => {
-    console.log("e>>>", e)
-    //e.preventDefault();
     axios.post(process.env.REACT_APP_BASE_URL + "api/barazauser", {
         firstname,
         othernames,
-        id,
+        idorpassportnumber,
         phonenumber,
         gender,
         dateofbirth,
@@ -49,29 +47,45 @@ const onSubmit = (e) => {
         pollingstation
     })
     .then((response)=>{
-        console.log("Response>>>", response.data)
+        const message = response.data.message;
+        //reset()
+        toast.success(message);
     })
     .catch((error)=>{
         console.log(error)
     })
 }
 
+const reset = ()=>{
+  setFirstName("")
+  setOtherNames("")
+  setID("")
+  setPhoneNumber("")
+  setGender("")
+  setDateOfBirth("")
+  setCounty("")
+  setConstituencies("")
+  setWard("")
+  setPollingStation("")
+}
 const { Option } = Select;
 
-
 return (
-    <Card style={{width: 900}}>
+    <div className="register-container">
+      <Card style={{width: 900}}>
         <Form form={form} name="register"
       onFinish={onSubmit}>
-      <Row>
+      <Row className="register-row">
           <Col md={8}>
-              <h3>Company Logo</h3>
-              <img />
+              <div className="company-logo">
+              <img src={logo} alt="Company Logo" />
+              </div>
           </Col>
           <Col md={8}>
           <Form.Item
         name="firstname"
         label="First Name"
+        className="input-area"
         rules={[
           {
             required: true,
@@ -87,6 +101,7 @@ return (
       <Form.Item
         name="othernames"
         label="Other Names"
+        className="input-area"
         rules={[
           {
             required: true,
@@ -102,6 +117,7 @@ return (
       <Form.Item
         name="id"
         label="ID / Passport Number"
+        className="input-area"
         rules={[
           {
             required: true,
@@ -110,13 +126,14 @@ return (
         ]}
       >
         <Input 
-          value={id}
+          value={idorpassportnumber}
           onChange={(e)=> setID(e.target.value)}
         />
       </Form.Item>
       <Form.Item
         name="phonenumber"
         label="Phone Number"
+        className="input-area"
         rules={[
           {
             required: true,
@@ -133,6 +150,7 @@ return (
       <Form.Item
         name="gender"
         label="Gender"
+        className="input-area"
         rules={[
           {
             required: true,
@@ -140,11 +158,10 @@ return (
           },
         ]}
       >
-        <Select placeholder="Add Gender">
-            {gender.map((val, index)=> {
-                console.log("GI>>>", gender[0].toLocaleLowerCase())
+        <Select placeholder="Add Gender" onChange={value => setGender(value)}>
+        {genders.map((val, index)=> {
                 return(
-                    <Option key={index} value={gender[index]}>{val}</Option>
+                    <Option key={index} value={val}>{val}</Option>
                 );
             })}
         </Select>
@@ -154,6 +171,7 @@ return (
       <Form.Item
         name="dateofbirth"
         label="Date of Birth"
+        className="input-area"
         rules={[
           {
             required: true,
@@ -169,6 +187,7 @@ return (
     <Form.Item
         name="county"
         label="County"
+        className="input-area"
         rules={[
           {
             required: true,
@@ -176,17 +195,21 @@ return (
           },
         ]}
       >
-        <Select placeholder="Add County">
-            {county.map((value, index)=>{
+        <Select placeholder="Add County" onChange={value =>setCounty(value)}>
+            {/* {county.map((value, index)=>{
                 return(
                     <Option key={index} value={value}>{value}</Option>
                 )
-            })}
+            })} */}
+            <Option value="nairobi">Nairobi</Option>
+          <Option value="kisii">Kisii</Option>
+          <Option value="narok">Narok</Option> 
         </Select>
       </Form.Item>
       <Form.Item
         name="constituencies"
         label="Constituencies"
+        className="input-area"
         rules={[
           {
             required: true,
@@ -194,17 +217,21 @@ return (
           },
         ]}
       >
-        <Select placeholder="Add Constituencies">
-           {constituencies.map((value, index)=>{
+        <Select placeholder="Add Constituencies" onChange={value =>{setConstituencies(value)}}>
+           {/* {constituencies.map((value, index)=>{
                return(
                    <Option key={index} value={value}>{value}</Option>
                )
-           })}
+           })} */}
+           <Option value="kajiado">Kajiado</Option>
+          <Option value="kwale">Kwale</Option>
+          <Option value="bomachoge">Bomachaoge</Option> 
         </Select>
       </Form.Item>
       <Form.Item
         name="ward"
         label="Ward"
+        className="input-area"
         rules={[
           {
             required: true,
@@ -212,17 +239,21 @@ return (
           },
         ]}
       >
-        <Select placeholder="Add Ward">
-          {ward.map((value, index)=>{
+        <Select placeholder="Add Ward" onChange={value =>setWard(value)}>
+          {/* {ward.map((value, index)=>{
               return(
                   <Option key={index} value={value}>{value}</Option>
               )
-          })}
+          })} */}
+          <Option value="kenyenya">Kenyenya</Option>
+          <Option value="tendere">Tendere</Option>
+          <Option value="kabianga">Kabianga</Option> 
         </Select>
       </Form.Item>
       <Form.Item
         name="pollingstation"
         label="Polling Station"
+        className="input-area"
         rules={[
           {
             required: true,
@@ -230,16 +261,19 @@ return (
           },
         ]}
       >
-        <Select placeholder="Add Polling Station">
-          {pollingstation.map((value, index)=>{
+        <Select placeholder="Add Polling Station" onChange={value =>setPollingStation(value)}>
+          {/* {pollingstation.map((value, index)=>{
               return(
                   <Option key={index} value={value}>{value}</Option>
               )
-          })}
+          })} */}
+          <Option value="rongai">Rongai</Option>
+          <Option value="laiser">Laiser</Option>
+          <Option value="kiserian">Kiserian</Option> 
         </Select>
       </Form.Item>
       <Form.Item>
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit" className="ant-btn-primary-register">
           Submit Details
         </Button>
       </Form.Item>
@@ -249,13 +283,18 @@ return (
     <Row>
       <Col md={24}>
         <Form.Item>
-        <Button type="secondary" htmlType="submit">
+        <div className="verify-status">
+        <Link to="/verify-status">
+        <Button type="secondary" htmlType="submit" className="verify-status">
           Verify Status
         </Button>
+        </Link>
+        </div>
         </Form.Item>
       </Col>
     </Row>
     </Card>
+    </div>
   );
 
 }

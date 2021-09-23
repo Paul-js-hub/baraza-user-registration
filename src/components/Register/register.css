@@ -1,0 +1,60 @@
+.ant-btn-primary-register {
+    width: 100%;
+}
+
+.ant-card.ant-card-bordered {
+    display: flex;
+    margin: 0.2rem;
+    padding: 0.6rem;
+    flex-direction: column;
+    width: 25%;
+    left: 50%;
+    top: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    border: 1px solid gray;
+}
+
+.ant-row.ant-form-item.input-area {
+    display: block;
+    margin: 12px;
+}
+
+.ant-form-item-label > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before {
+    display: inline-block;
+    margin-right: 4px;
+    color: #ff4d4f;
+    font-size: 14px;
+    font-family: SimSun, sans-serif;
+    line-height: 1;
+    content: none !important;
+}
+
+.ant-form-item-label > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::after {
+    display: inline-block;
+    margin-right: 4px;
+    color: #ff4d4f;
+    font-size: 14px;
+    font-family: SimSun, sans-serif;
+    line-height: 1;
+    content: '*';
+}
+
+.company-logo > img{
+        width: 100%;
+        margin-top: 23px;
+        height: 360px;
+}
+
+.verify-status {
+    display: flex;
+    justify-content: center;
+}
+
+.ant-btn-secondary.verify-status {
+    height: 48px;
+    width: 180px;
+    background-color: black;
+    color: white;
+    border: 1px solid gray;
+}
